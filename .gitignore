@@ -1,0 +1,5 @@
+/bin
+.clangd
+/node_modules
+/package-lock.json
+index.html

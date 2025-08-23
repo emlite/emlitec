@@ -1,0 +1,45 @@
+{
+  "name": "emlitec",
+  "version": "0.1.24",
+  "description": "A tiny JS bridge for C/C++ via wasm",
+  "main": "scripts/index.js",
+  "type": "module",
+  "directories": {
+    "example": "examples",
+    "test": "tests"
+  },
+  "scripts": {
+    "build:tests": "node scripts/build_tests.js",
+    "gen:html_tests": "node scripts/gen_html_tests.js",
+    "test:all": "npm run build:tests && npm run gen:html_tests",
+    "serve": "http-server ./bin",
+    "clean": "rm -rf bin",
+    "gen:docs": "doxygen"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emlite/emlitec.git"
+  },
+  "keywords": [
+    "wasm",
+    "wasi",
+    "polyfill",
+    "shim",
+    "webassembly"
+  ],
+  "author": "MoAlyousef",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/emlite/emlitec/issues"
+  },
+  "homepage": "https://github.com/emlite/emlitec#readme",
+  "devDependencies": {
+    "@bjorn3/browser_wasi_shim": "^0.4.1",
+    "@eslint/js": "^9.29.0",
+    "emlite": "^0.1.26",
+    "eslint": "^9.29.0",
+    "globals": "^16.2.0",
+    "http-server": "^14.1.1",
+    "webpack-cli": "^6.0.1"
+  }
+}

@@ -1,0 +1,9 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+find_dependency(emcore)
+
+include("${CMAKE_CURRENT_LIST_DIR}/emlitecTargets.cmake")
+
+set(emlitec_VERSION "@PACKAGE_VERSION@")

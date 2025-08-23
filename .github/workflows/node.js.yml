@@ -1,0 +1,45 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: seanmiddleditch/gha-setup-ninja@master
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Get wasi-libc via apt
+      run: sudo apt-get update && sudo apt-get install wasi-libc libclang-rt-dev-wasm32 -y
+    - name: Get wasi-sdk
+      run: |
+        wget https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-25/wasi-sdk-25.0-x86_64-linux.tar.gz
+        tar -xf wasi-sdk-25.0-x86_64-linux.tar.gz
+        rm -rf wasi-sdk-25.0-x86_64-linux.tar.gz
+    - name: Get wasi-sysroot
+      run: |
+        wget https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-25/wasi-sysroot-25.0.tar.gz
+        tar -xf wasi-sysroot-25.0.tar.gz
+        rm -rf wasi-sysroot-25.0.tar.gz
+    - name: get submodules
+      run: git submodule update --init --recursive
+    - name: npm install
+      run: npm install
+    - name: build tests for freestanding, wasi-libc, wasi-sysroot and wasi-sdk
+      env:
+        WASI_SDK: wasi-sdk-25.0-x86_64-linux
+        WASI_LIBC: /usr
+      run: WASI_SYSROOT=$(pwd)/wasi-sysroot-25.0 npm run test:all

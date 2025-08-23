@@ -1,0 +1,3 @@
+[submodule "emcore"]
+	path = emcore
+	url = https://github.com/emlite/emcore
