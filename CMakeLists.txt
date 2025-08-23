@@ -40,7 +40,7 @@ endif()
 
 include(GNUInstallDirs)
 
-set(emlitec_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/emlite")
+set(emlitec_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/emlitec")
 
 install(TARGETS emlitec EXPORT emlitecTargets FILE_SET  HEADERS
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
