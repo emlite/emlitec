@@ -1,5 +1,10 @@
 #include <emlite/emlite.h>
 
+#ifdef EMLITE_WASIP2
+    extern Handle emlite_register_callback(Callback);
+    extern void emlite_unregister_callback(Handle);
+#endif
+
 em_Val em_Val_from_bool(bool i) { return (em_Val){.h = emlite_val_make_bool(i)}; }
 
 em_Val em_Val_from_int(int i) { return (em_Val){.h = emlite_val_make_int(i)}; }
