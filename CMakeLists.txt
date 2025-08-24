@@ -31,7 +31,9 @@ if(NOT emcore_FOUND)
     add_subdirectory(emcore)
 endif()
 target_link_libraries(emlitec PUBLIC emcore::emcore)
-
+if (CMAKE_C_COMPILER_TARGET STREQUAL "wasm32-wasip2" OR CMAKE_CXX_COMPILER_TARGET STREQUAL "wasm32-wasip2")
+  target_compile_definitions(emlitec PUBLIC EMLITE_WASIP2)
+endif()
 add_library(emlitec::emlitec ALIAS emlitec)
 
 if (EMLITEC_BUILD_EXAMPLES)

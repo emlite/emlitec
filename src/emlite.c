@@ -44,7 +44,11 @@ em_Val em_Val_object() { return em_Val_from_handle(emlite_val_new_object()); }
 em_Val em_Val_array() { return em_Val_from_handle(emlite_val_new_array()); }
 
 em_Val em_Val_make_fn(Callback f, Handle data) {
-    uint32_t fidx = (uint32_t)f;
+#ifdef EMLITE_WASIP2
+    Handle fidx = emlite_register_callback(f);
+#else
+    Handle fidx = (uint32_t)f;
+#endif
     return em_Val_from_handle(emlite_val_make_callback(fidx, data));
 }
 
