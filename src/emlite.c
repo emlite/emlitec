@@ -1,10 +1,5 @@
 #include <emlite/emlite.h>
 
-#ifdef EMLITE_WASIP2
-    extern Handle emlite_register_callback(Callback);
-    extern void emlite_unregister_callback(Handle);
-#endif
-
 em_Val em_Val_from_bool(bool i) { return (em_Val){.h = emlite_val_make_bool(i)}; }
 
 em_Val em_Val_from_int(int i) { return (em_Val){.h = emlite_val_make_int(i)}; }
@@ -50,11 +45,25 @@ em_Val em_Val_array() { return em_Val_from_handle(emlite_val_new_array()); }
 
 em_Val em_Val_make_fn(Callback f, Handle data) {
 #ifdef EMLITE_WASIP2
-    Handle fidx = emlite_register_callback(f);
+    // Store callback on JS side across all targets.
+    // Pack the C function pointer and user data into an allocated struct and
+    // pass its pointer as BigInt via the JS handle map. Pin the user data
+    // handle for the lifetime of the JS function.
+    emlite_val_inc_ref(data);
+
+    EmliteCbPack *pack = (EmliteCbPack *)emlite_malloc(sizeof(EmliteCbPack));
+    if (!pack) {
+        return em_Val_undefined();
+    }
+    pack->fn        = f;
+    pack->user_data = data;
+
+    Handle packed_handle = emlite_val_make_biguint((unsigned long long)(uintptr_t)pack);
+    return em_Val_from_handle(emlite_val_make_callback(0, packed_handle));
 #else
     Handle fidx = (uint32_t)f;
-#endif
     return em_Val_from_handle(emlite_val_make_callback(fidx, data));
+#endif
 }
 
 void em_Val_delete(em_Val v) { emlite_val_dec_ref(v.h); }
