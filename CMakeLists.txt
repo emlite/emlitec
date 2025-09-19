@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.28)
-project(emlitec VERSION 0.1.4 LANGUAGES C)
+project(emlitec VERSION 0.1.5 LANGUAGES C)
 
 option(EMLITEC_BUILD_EXAMPLES "Build examples" OFF)
 
